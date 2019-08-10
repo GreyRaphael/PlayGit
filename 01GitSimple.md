@@ -8,6 +8,8 @@
   - [.git directory](#git-directory)
   - [detached HEAD(分离头指针)](#detached-head%e5%88%86%e7%a6%bb%e5%a4%b4%e6%8c%87%e9%92%88)
   - [meld commits](#meld-commits)
+  - [diff](#diff)
+  - [reset, checkout](#reset-checkout)
 
 ## Introduction
 
@@ -427,3 +429,28 @@ git rebase --continue
 ```
 
 > 如果合并root commit, 那么`gitk --all`上有两个commit没有Parent节点，最新的那个节点之前的commits都可以丢弃掉
+
+## diff
+
+when stagged file, `git diff --cached`比较stagged和HEAD
+
+`git diff`: 比较工作区与stagged area所有的difference
+
+`git diff -- readme.md`: 比较工作区与stagged area中readme.md文件的difference
+
+## reset, checkout
+
+- `git reset HEAD`: unstagged all, 暂存区所有变成HEAD内容
+- `git reset HEAD -- <file>`: unstagged a file, 暂存区<file>所有变成HEAD内容
+
+```bash
+git reset HEAD
+git diff --cached
+```
+
+`git checkout -- <file>`: discard changes, 工作区变成暂存区内容
+
+```bash
+git checkout -- readme.md
+git diff
+```
