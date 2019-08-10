@@ -1,5 +1,11 @@
 # Git Simple Operation
 
+- [Git Simple Operation](#git-simple-operation)
+  - [Introduction](#introduction)
+  - [Git New](#git-new)
+  - [Git flow](#git-flow)
+  - [Log](#log)
+
 ## Introduction
 
 **Test Installation**
@@ -90,3 +96,35 @@ git reset --hard
 # rename trick
 git mv filename1 filename2
 ```
+
+## Log
+
+```bash
+git log --oneline # show log in one line
+git log -n2 --oneline # recent 2 log in oneline
+```
+
+```bash
+# see branch
+git branch -v
+
+# 1.new branch
+git checkout -b temp 60603745e47
+
+# 2. modify file, add, commit
+
+# 3. see branch
+git branch -v
+#   master 91d3a5f modify file2
+# * temp   4431e98 modify file3
+
+# 4. log
+git log # see current branch log
+git log --all # see all branchs log
+git log --all --oneline --graph # show all in graph
+git log --all --oneline -n4 # show 4 log in graph
+```
+
+GUI log: `gitk`
+> 直接在vscode termianl中`gitk`  
+> ![](Res01/gitk.png)
