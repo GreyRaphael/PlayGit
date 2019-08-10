@@ -34,3 +34,59 @@ git config --list --system
 # all config
 git config --list
 ```
+
+## Git New
+
+Empty Directory: 
+
+```bash
+git init project_name
+cd project_name
+```
+
+Not Empty Directory:
+
+```bash
+cd project_name
+git init
+```
+
+## Git flow
+
+![](Res01/git_state.png)
+
+```bash
+# check status
+git status
+
+# 1.new file
+
+# 2. add to staged
+git add file1.txt
+git add dir1
+git add *
+git add -u # add modified file
+
+# 3. commit
+git commit -m "add file1"
+
+# 4. push
+git push origin master
+```
+
+Rename Trick:
+
+```bash
+# without trick
+mv filename1 filename2
+git status
+git rm filename1
+git add filename2
+git status
+
+# disgard all changes in staged area
+git reset --hard
+
+# rename trick
+git mv filename1 filename2
+```
