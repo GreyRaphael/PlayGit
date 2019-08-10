@@ -5,6 +5,7 @@
   - [Git New](#git-new)
   - [Git flow](#git-flow)
   - [Log](#log)
+  - [.git directory](#git-directory)
 
 ## Introduction
 
@@ -128,3 +129,124 @@ git log --all --oneline -n4 # show 4 log in graph
 GUI log: `gitk`
 > 直接在vscode termianl中`gitk`  
 > ![](Res01/gitk.png)
+
+## .git directory
+
+```bash
+.git/
+    HEAD # pointer
+    config # some --local config
+    refs/
+        heads/
+            master
+            branch1
+            branch2
+            ...
+        tags/
+            v1.0
+            v1.1
+            ...
+    objects/
+        d8/
+        9c/
+        ...
+```
+
+`git checkout master`: Switch branch
+
+```bash
+cat HEAD
+# ref: refs/heads/master
+# git checkout master本质是修改HEAD文件
+
+cat config
+# ...
+# git config --local user.name='your_name'本质是修改config文件
+
+cat refs/heads/master
+# ...
+```
+
+`git cat-file`: 命令显示版本库对象的内容、类型及大小信息。
+
+git对象类型:
+- tree
+- commit
+- blob
+- tag
+- ...
+
+```bash
+git cat-file -t # 显示对象的类型
+git cat-file -p # 显示对象的内容
+```
+
+```bash
+# example
+
+git branch -v
+#   master 91d3a5f modify file2
+# * temp   4431e98 modify file3
+
+cd .git/refs/heads
+cat master
+# 91d3a5f76ed3274df6f2073eaa018cc2fb226e94
+
+git cat-file -t 91d3a5f76ed
+# commit
+
+git cat-file -p 91d3a5f76ed
+# tree bae57d5506e910894382e78a7aa1c67072c97518
+# parent 60603745e476254d02d91d383ef4d74904a12f9a
+# author HPGrey <grey@pku.edu.cn> 1565435948 +0800
+# committer HPGrey <grey@pku.edu.cn> 1565435948 +0800
+
+# modify file2
+```
+
+```bash
+# example
+
+cd .git/objects/d8
+ls
+# 8c464a96a5c64a07b18b798cbbba2ed2a60d51
+git cat-file -t d88c464a96a
+# blob
+
+cd .git/objects/9c
+ls
+# a0c4d55c3c094626c78786340d3d1f8a13d44f
+git cat-file -t 9ca0c4d55c3c09462
+# tree
+```
+
+**git核心对象**: commit, tree, blob
+> ![](Res01/git_objects.png)
+
+- 一个commit相当于一个快照
+- 一个commit对应一个tree
+- 一个directory对应一个tree
+- blob的hash值相同就是同一个文件
+
+```bash
+# example
+git log --oneline
+# 4431e98 (HEAD -> temp) modify file3
+# 6060374 (tag: interesting1) rename file
+# e159ce0 add 3 file
+
+git cat-file -t 6060374
+# commit
+
+git cat-file -p 6060374
+# tree 979c0bed4d7fd86f7d03b8c1b70be8148f32723f
+# parent e159ce04f97055268f275fe75f172926cd9ac177
+# author HPGrey <grey@pku.edu.cn> 1565435676 +0800
+# committer HPGrey <grey@pku.edu.cn> 1565435676 +0800
+# rename file
+
+git cat-file -p 979c0bed4d7fd86f7d03b8c1b70be8148f32723f
+# 100644 blob d88c464a96a5c64a07b18b798cbbba2ed2a60d51    file11.txt
+# 100644 blob d9a0c4d55c3c094626c78786340d3d1f8a13d44f    file2.txt
+# 100644 blob 968200480e69a05b4d85b9e7143d864bc9c7435b    file3.txt
+```
