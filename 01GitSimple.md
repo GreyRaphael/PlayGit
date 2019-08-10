@@ -332,3 +332,38 @@ git diff HEAD HEAD^1^1 # compare HEAD with its grandfather
 git diff HEAD HEAD^^ # compare HEAD with its grandfather
 git diff HEAD HEAD~2 # compare HEAD with its grandfather
 ```
+
+- `git branch -d new1`: delete branch with warning;
+- `git branch -D new1`: delete branch without warning;
+
+`git commit --amend`: 对最近一次commit的message进行变更
+
+```bash
+# 对历史commit的message进行变更
+git log --oneline
+# ae2dbeb (HEAD -> master) modify file2, hello
+# b8d6373 rename file
+# e159ce0 add 3 file
+
+git rebase -i e159ce0
+# [detached HEAD e5190ab] rename file,world
+#  Date: Sat Aug 10 19:14:36 2019 +0800
+#  1 file changed, 0 insertions(+), 0 deletions(-)
+#  rename file1.txt => file11.txt (100%)
+# Successfully rebased and updated refs/heads/master.
+
+# # in vim: modify command
+reword 6060374 rename file
+pick 7ef2138 modify file2, hello
+
+# # in vim: modify message
+rename file, world
+
+git log --oneline
+# b19ae62 (HEAD -> master) modify file2, hello
+# e5190ab rename file,world
+# e159ce0 add 3 file
+```
+
+> rebase是一般用于自己的branch(还没有贡献到集成的分支上)，已经贡献到集成分支上的不要使用rebase，会影响其他人工作
+
