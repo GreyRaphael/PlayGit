@@ -7,6 +7,7 @@
   - [Log](#log)
   - [.git directory](#git-directory)
   - [detached HEAD(分离头指针)](#detached-head%e5%88%86%e7%a6%bb%e5%a4%b4%e6%8c%87%e9%92%88)
+  - [meld commits](#meld-commits)
 
 ## Introduction
 
@@ -367,3 +368,62 @@ git log --oneline
 
 > rebase是一般用于自己的branch(还没有贡献到集成的分支上)，已经贡献到集成分支上的不要使用rebase，会影响其他人工作
 
+## meld commits
+
+meld continuous commits(合并历史上连续的commits)
+
+```bash
+git log --oneline
+# c2372b4 (HEAD -> master) modify file1
+# 6607010 add 3 lines
+# 5960835 add lines
+# 0ff6223 add words
+# b19ae62 modify file2, hello
+# e5190ab rename file,world
+# e159ce0 add 3 file
+
+git rebase -i b19ae62
+# [detached HEAD 70b86bd] add something to file1
+#  Date: Sat Aug 10 22:42:00 2019 +0800
+#  1 file changed, 10 insertions(+)
+#  create mode 100644 file1.txt
+# Successfully rebased and updated refs/heads/master.
+
+# # in vim: modify command
+pick 0ff6223 add words
+s 5960835 add lines
+s 6607010 add 3 lines
+s c2372b4 modify file1
+
+## in vim: modify commit message
+...
+
+git log --oneline
+# 70b86bd (HEAD -> master) add something to file1
+# b19ae62 modify file2, hello
+# e5190ab rename file,world
+# e159ce0 add 3 file
+```
+
+meld discontinuous commits(合并历史上不连续的commits)
+
+```bash
+git log --oneline
+# 70b86bd (HEAD -> master) add something to file1
+# b19ae62 modify file2, hello
+# e5190ab rename file,world
+# e159ce0 add 3 file
+
+git rebase -i e159ce0
+
+# in vim: modify commit commana，合并root commit 和不连续的另一个
+pick e159ce0
+s b19ae62
+pick e5190ab
+pick 70b86bd
+
+git status
+git rebase --continue
+```
+
+> 如果合并root commit, 那么`gitk --all`上有两个commit没有Parent节点，最新的那个节点之前的commits都可以丢弃掉
