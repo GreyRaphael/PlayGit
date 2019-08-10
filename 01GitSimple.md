@@ -6,6 +6,7 @@
   - [Git flow](#git-flow)
   - [Log](#log)
   - [.git directory](#git-directory)
+  - [detached HEAD(分离头指针)](#detached-head%e5%88%86%e7%a6%bb%e5%a4%b4%e6%8c%87%e9%92%88)
 
 ## Introduction
 
@@ -249,4 +250,85 @@ git cat-file -p 979c0bed4d7fd86f7d03b8c1b70be8148f32723f
 # 100644 blob d88c464a96a5c64a07b18b798cbbba2ed2a60d51    file11.txt
 # 100644 blob d9a0c4d55c3c094626c78786340d3d1f8a13d44f    file2.txt
 # 100644 blob 968200480e69a05b4d85b9e7143d864bc9c7435b    file3.txt
+```
+
+## detached HEAD(分离头指针)
+
+detached HEAD: 本质是没有在branch上面工作，但可以add, commit，但如果再切换到branch，之前的工作就消失了；所以detached HEAD应用到
+- detached HEAD需要和某个branch挂钩，进而保存工作
+- detached HEAD用来做实验，做完了扔掉
+
+```bash
+# example
+git branch -v
+# * master 91d3a5f modify file2
+#   temp   4431e98 modify file3
+
+git log --oneline
+# 91d3a5f (HEAD -> master) modify file2
+# 6060374 (tag: interesting1) rename file
+# e159ce0 add 3 file
+
+git checkout 6060374
+# Note: checking out '6060374'.
+
+# You are in 'detached HEAD' state. You can look around, make experimental
+# changes and commit them, and you can discard any commits you make in this
+# state without impacting any branches by performing another checkout.
+
+# If you want to create a new branch to retain commits you create, you may
+# do so (now or later) by using -b with the checkout command again. Example:
+
+#   git checkout -b <new-branch-name>
+
+# HEAD is now at 6060374 rename file
+
+git branch -v
+# * (HEAD detached at 6060374) 6060374 rename file
+#   master                     91d3a5f modify file2
+#   temp                       4431e98 modify file3
+
+# # modify file
+
+git checkout master
+# Warning: you are leaving 1 commit behind, not connected to
+# any of your branches:
+#   5b180c7 addline to file3
+# If you want to keep it by creating a new branch, this may be a good time
+# to do so with:
+#  git branch <new-branch-name> 5b180c7
+# Switched to branch 'master'
+
+git branch dbranch 5b180c7
+
+git branch -v
+#   dbranch 5b180c7 addline to file3
+# * master  91d3a5f modify file2
+#   temp    4431e98 modify file3
+```
+
+`git checkout -b new1 temp`: new branch `new1` based on branch `temp`
+
+```bash
+# example
+git checkout -b new1 temp
+
+git log --oneline # HEAD既指new1, 也指向temp
+# 4431e98 (HEAD -> new1, temp) modify file3
+# 6060374 (tag: interesting1) rename file
+# e159ce0 add 3 file
+
+gitk --all
+
+# compare two commit
+git diff 4431e98 6060374
+git diff HEAD 6060374
+
+git diff HEAD HEAD^1 # compare HEAD with its father
+git diff HEAD HEAD^ # compare HEAD with its father
+git diff HEAD HEAD~1 # compare HEAD with its father
+
+git diff HEAD HEAD^1^1 # compare HEAD with its grandfather
+git diff HEAD HEAD^^ # compare HEAD with its grandfather
+git diff HEAD HEAD~2 # compare HEAD with its grandfather
 ```
