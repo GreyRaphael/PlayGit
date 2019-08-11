@@ -102,6 +102,22 @@ git reset --hard
 git mv filename1 filename2
 ```
 
+Delete Trick:
+
+```bash
+# without trick
+rm file1
+git status
+git rm file1
+git status
+
+git reset --hard
+
+# delete trick
+git rm file1
+git status
+```
+
 ## Log
 
 ```bash
