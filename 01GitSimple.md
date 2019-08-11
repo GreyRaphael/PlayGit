@@ -12,6 +12,7 @@
   - [Stash](#stash)
   - [Git Backup](#git-backup)
   - [Github](#github)
+  - [Github with Collaborator](#github-with-collaborator)
 
 ## Introduction
 
@@ -646,3 +647,8 @@ git push github master
 
 method2: rebase
 > 以remote/github/master作为基础，`rebase -i`, 然后pick, squish, squish来形成一个新的tree, 代价就是更改了以前commits的hash值
+
+## Github with Collaborator
+
+[Set Collaborator](https://github.com/BetaGrey/test/settings/collaboration)
+
