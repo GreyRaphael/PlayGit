@@ -11,6 +11,7 @@
   - [reset, checkout](#reset-checkout)
   - [Stash](#stash)
   - [Git Backup](#git-backup)
+  - [Github](#github)
 
 ## Introduction
 
@@ -594,4 +595,54 @@ git branch -av
 #   remotes/zhineng/gewei  10ede7d fix file3
 #   remotes/zhineng/master 10ede7d fix file3
 #   remotes/zhineng/temp   ac222b7 mofidy file3
+
+# 6. remove remote
+git remote remove zhineng
 ```
+
+## Github
+
+example: sync with github
+
+```bash
+git remote add github git@github.com:GreyRaphael/test.git
+git remote -v
+# github  git@github.com:GreyRaphael/test.git (fetch)
+# github  git@github.com:GreyRaphael/test.git (push)
+# zhineng file://C:\Users\Administrator\Downloads\zhineng.git (fetch)
+# zhineng file://C:\Users\Administrator\Downloads\zhineng.git (push)
+
+# push all branches to remote
+git push github --all
+# To github.com:GreyRaphael/test.git
+#  * [new branch]      gewei -> gewei
+#  * [new branch]      temp -> temp
+#  ! [rejected]        master -> master (fetch first)
+# error: failed to push some refs to 'git@github.com:GreyRaphael/test.git'
+
+# pull: 先fetch再merge; 保险起见fetch
+git fetch github master
+# From github.com:GreyRaphael/test
+#  * branch            master     -> FETCH_HEAD
+#  * [new branch]      master     -> github/master
+
+# fetch会将remote的tree拿下来，但trees并没有连接
+gitk --all
+```
+
+non fast-forward: master与remote/github/master没有共同的祖先; 所以non fast-forward再push回报错;
+
+method1: merge
+
+```bash
+# method1: merge
+git checkout master
+git merge github/master # 因为master没有父子关系，会报错
+# fatal: refusing to merge unrelated histories
+git merge --allow-unrelated-histories github/master # ok
+gitk --all # merge之后的HEAD有两个Parent节点
+git push github master
+```
+
+method2: rebase
+> 以remote/github/master作为基础，`rebase -i`, 然后pick, squish, squish来形成一个新的tree, 代价就是更改了以前commits的hash值
