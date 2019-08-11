@@ -466,3 +466,4 @@ git diff --cached # empty result
 git checkout -- readme.md
 git diff # empty result
 ```
+
