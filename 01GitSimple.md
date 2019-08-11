@@ -608,6 +608,16 @@ git remote remove zhineng
 
 ## Github
 
+[Github Features](https://github.com/features)
+> github的CI是3rd提供的  
+> gitlab本身具有CI
+
+Github Trick:
+- [Advanced Search](https://github.com/search/advanced?) Repos: created:<2019-01-01
+- search readme: `ipv6 hosts google in:readme filename:hosts`
+- search readme: `ipv6 hosts in:readme stars:>1000`
+- search blog: `github blog in:readme stars:>2000`
+
 example: sync with github
 
 ```bash
@@ -655,5 +665,7 @@ method2: rebase
 
 ## Github with Collaborator
 
-[Set Collaborator](https://github.com/BetaGrey/test/settings/collaboration)
+Method1: repo/Settings/Collaborators(recommended)
+> all collaborators should have Github account
 
+Method2: 
