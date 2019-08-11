@@ -438,6 +438,23 @@ git rebase --continue
 
 `git diff -- readme.md`: 比较工作区与stagged中readme.md文件的difference
 
+- `git diff master temp -- file3.txt`: compare a file in two branches
+- `git diff master temp -- file3.txt`: compare all files in two branches
+
+example: compare file in 2 commits
+
+```bash
+git log --oneline --graph --all
+# * ac222b7 (HEAD -> temp) mofidy file3
+# | * 10ede7d (master) fix file3
+# | * 29523ea fix file2
+# |/
+# * e1b1187 add txts
+# * 9d4847d add style
+
+git diff 10ede7d ac222b7 -- file3.txt
+```
+
 ## reset, checkout
 
 - `git reset HEAD`: unstagged all, 从HEAD到stagged
