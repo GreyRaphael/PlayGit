@@ -14,6 +14,7 @@
   - [Github](#github)
   - [Github with Collaborator](#github-with-collaborator)
   - [Github blog](#github-blog)
+  - [Github Organization](#github-organization)
 
 ## Introduction
 
@@ -675,3 +676,10 @@ Method2:
 
 Github Advanced Search: `github blog in:readme`
 > [jekyll](https://github.com/barryclark/jekyll-now)
+
+## Github Organization
+
+Organization包含repos, Organization中有People(Github user), 权限控制采用Team
+> 对比Gitlab, People中的所有人都可以看到其他人的权限，方便申请
+
+[ExampleOrganization](https://github.com/pku-ion-beam)
