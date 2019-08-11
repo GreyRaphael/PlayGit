@@ -27,11 +27,16 @@ git config --global user.email "email@example.com"
 
 # find name, email
 git config --list
+
+# delete user
+git config --local --unset user.name
+git config --local --unset user.email
 ```
 
 local, global, system:
 
 ```bash
+# local > global > system
 git config --local # only for a repo
 git config --global # for all repos of current user(recommended)
 git config --system # 对系统所有登录的用户有效
