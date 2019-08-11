@@ -13,6 +13,7 @@
   - [Git Backup](#git-backup)
   - [Github](#github)
   - [Github with Collaborator](#github-with-collaborator)
+  - [Github blog](#github-blog)
 
 ## Introduction
 
@@ -669,3 +670,8 @@ Method1: repo/Settings/Collaborators(recommended)
 > all collaborators should have Github account
 
 Method2: 
+
+## Github blog
+
+Github Advanced Search: `github blog in:readme`
+> [jekyll](https://github.com/barryclark/jekyll-now)
