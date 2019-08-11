@@ -2,7 +2,6 @@
 
 - [Git Simple Operation](#git-simple-operation)
   - [Introduction](#introduction)
-  - [Git New](#git-new)
   - [Git flow](#git-flow)
   - [Log](#log)
   - [.git directory](#git-directory)
@@ -13,9 +12,7 @@
 
 ## Introduction
 
-**Test Installation**
-
-`git --version`
+`git --version`: test installation
 
 **Minimal Config**
 
@@ -46,7 +43,7 @@ git config --list --system
 git config --list
 ```
 
-## Git New
+**Git New repo**
 
 Empty Directory: 
 
@@ -76,7 +73,7 @@ git status
 git add file1.txt
 git add dir1
 git add *
-git add -u # add modified file
+git add -u # add all modified files
 
 # 3. commit
 git commit -m "add file1"
@@ -432,7 +429,7 @@ git rebase --continue
 
 ## diff
 
-when stagged file, `git diff --cached`比较stagged和HEAD
+`git diff --cached`: 比较stagged和HEAD
 
 `git diff`: 比较工作区与stagged area所有的difference
 
@@ -445,12 +442,12 @@ when stagged file, `git diff --cached`比较stagged和HEAD
 
 ```bash
 git reset HEAD
-git diff --cached
+git diff --cached # empty result
 ```
 
 `git checkout -- <file>`: discard changes, 工作区变成暂存区内容
 
 ```bash
 git checkout -- readme.md
-git diff
+git diff # empty result
 ```
