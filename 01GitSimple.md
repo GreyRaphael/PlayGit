@@ -467,3 +467,27 @@ git checkout -- readme.md
 git diff # empty result
 ```
 
+example: drop recent 2 commits
+
+```bash
+git log --oneline
+# cb70918 (HEAD -> master) fix file2, file3
+# 2c7a7ba add line3 for file3Signed-off-by: Grey <grey@pku.edu.cn>
+# 10ede7d fix file3
+# 29523ea fix file2
+# e1b1187 add txts
+# 9d4847d add style
+
+gitk --all
+
+git reset --hard 10ede7d
+# HEAD is now at 10ede7d fix file3
+
+gitk --all
+
+git log --oneline
+# 10ede7d (HEAD -> master) fix file3
+# 29523ea fix file2
+# e1b1187 add txts
+# 9d4847d add style
+```
