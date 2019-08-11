@@ -10,6 +10,7 @@
   - [diff](#diff)
   - [reset, checkout](#reset-checkout)
   - [Stash](#stash)
+  - [Git Backup](#git-backup)
 
 ## Introduction
 
@@ -542,3 +543,55 @@ git log --oneline
 
 > Trick: [.gitignore templates](https://github.com/github/gitignore)
 
+## Git Backup
+
+> ![](Res01/git_backup1.png)
+
+常用协议|语法格式|说明
+---|---|---
+本地协议1|/path/to/repo.git|哑协议
+本地协议2|file:///path/to/repo.git|智能协议
+http/https|https://github.com/GreyRaphael/PlayGit.git|平时接触到的都是智能协议
+ssh|git@github.com:GreyRaphael/PlayGit.git|工作中用的智能协议
+
+> 直观区别：哑协议传输进度不不可⻅见；智能协议传输可⻅见。  
+> 传输速度：智能协议⽐比哑协议传输速度快。
+
+```bash
+# --bare: 不带code,只有.git
+git clone --bare C:\Users\Administrator\Downloads\myprojcet\.git ya.git
+git clone --bare file://C:\Users\Administrator\Downloads\myprojcet\.git zhineng.git
+
+# 带code
+git clone file://C:\Users\Administrator\Downloads\myprojcet\.git zhineng.git
+```
+
+example: backup in one machine
+
+```bash
+# 1. clone bare repo
+C:\Users\Administrator\Downloads>git clone --bare file://C:\Users\Administrator\Downloads\myprojcet\.git zhineng.git
+
+cd myproject
+
+git remote -v
+# empty result
+
+# 2. add remote
+git remote add zhineng file://C:\Users\Administrator\Downloads\zhineng.git
+
+# 3. add branch, modify file....
+git branch -av
+
+# 4. push & follow info
+git push zhineng
+
+# 5. check branch
+git branch -av
+# * gewei                  10ede7d fix file3
+#   master                 10ede7d fix file3
+#   temp                   ac222b7 mofidy file3
+#   remotes/zhineng/gewei  10ede7d fix file3
+#   remotes/zhineng/master 10ede7d fix file3
+#   remotes/zhineng/temp   ac222b7 mofidy file3
+```
