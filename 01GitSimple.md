@@ -9,6 +9,7 @@
   - [meld commits](#meld-commits)
   - [diff](#diff)
   - [reset, checkout](#reset-checkout)
+  - [Stash](#stash)
 
 ## Introduction
 
@@ -524,3 +525,20 @@ git log --oneline
 # e1b1187 add txts
 # 9d4847d add style
 ```
+
+## Stash
+
+暂时将工作区存到stash，方便以后使用
+
+- `git stash`: stash working dir
+- `git stash save "some msg"`: stash working dir with msg
+- `git stash list`
+- `git stash show`
+- `git stash show -p`: show stash with content
+- `git stash apply`: apply recent one, recent one still in stash
+- `git stash pop`: pop recent one, recent one not in stash anymore
+- `git stash drop`: drop recent one
+- `git stash clear`: clear all stashes
+
+> Trick: [.gitignore templates](https://github.com/github/gitignore)
+
