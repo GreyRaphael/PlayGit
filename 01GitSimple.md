@@ -445,7 +445,7 @@ git rebase --continue
 - `git reset --hard`: 从HEAD到stagged, 再到工作区
 
 git reset --soft HEAD~
-> undo last commit
+> undo last commit  
 > <img src="Res01/reset_soft.png" width=600>
 
 git reset --hard
