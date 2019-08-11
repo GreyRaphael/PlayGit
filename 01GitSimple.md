@@ -2,7 +2,6 @@
 
 - [Git Simple Operation](#git-simple-operation)
   - [Introduction](#introduction)
-  - [Git New](#git-new)
   - [Git flow](#git-flow)
   - [Log](#log)
   - [.git directory](#git-directory)
@@ -13,9 +12,7 @@
 
 ## Introduction
 
-**Test Installation**
-
-`git --version`
+`git --version`: test installation
 
 **Minimal Config**
 
@@ -46,7 +43,7 @@ git config --list --system
 git config --list
 ```
 
-## Git New
+**Git New repo**
 
 Empty Directory: 
 
@@ -75,11 +72,14 @@ git status
 # 2. add to staged
 git add file1.txt
 git add dir1
-git add *
-git add -u # add modified file
+git add * # add all
+git add -u # add all modified files
+git add -A # add new files
+
+git rm --cached file1.txt file2.txt # move files from stagged area to working dir
 
 # 3. commit
-git commit -m "add file1"
+git commit -m "add files"
 
 # 4. push
 git push origin master
@@ -95,7 +95,7 @@ git rm filename1
 git add filename2
 git status
 
-# disgard all changes in staged area
+# 从git区到stagged区，再到工作区
 git reset --hard
 
 # rename trick
@@ -428,29 +428,41 @@ git status
 git rebase --continue
 ```
 
-> 如果合并root commit, 那么`gitk --all`上有两个commit没有Parent节点，最新的那个节点之前的commits都可以丢弃掉
+> 如果合并 根commit, 那么`gitk --all`上有两个commit没有Parent节点，最新的那个节点之前的commits都可以丢弃掉
 
 ## diff
 
-when stagged file, `git diff --cached`比较stagged和HEAD
+`git diff --cached`: 比较stagged和HEAD
 
-`git diff`: 比较工作区与stagged area所有的difference
+`git diff`: 比较工作区与stagged所有的difference
 
-`git diff -- readme.md`: 比较工作区与stagged area中readme.md文件的difference
+`git diff -- readme.md`: 比较工作区与stagged中readme.md文件的difference
 
 ## reset, checkout
 
-- `git reset HEAD`: unstagged all, 暂存区所有变成HEAD内容
-- `git reset HEAD -- <file>`: unstagged a file, 暂存区<file>所有变成HEAD内容
+- `git reset HEAD`: unstagged all, 从HEAD到stagged
+- `git reset HEAD -- <file>`: unstagged a file, 暂存区<file>变成HEAD内容
+- `git reset --hard`: 从HEAD到stagged, 再到工作区
+
+git reset --soft HEAD~
+> undo last commit
+> <img src="Res01/reset_soft.png" width=600>
+
+git reset --hard
+> <img src="Res01/reset_hard.png" width=600>
+
+git reset --mixed(defaulted)
+> <img src="Res01/reset_mixed.png" width=600>
 
 ```bash
 git reset HEAD
-git diff --cached
+git diff --cached # empty result
 ```
 
-`git checkout -- <file>`: discard changes, 工作区变成暂存区内容
+- `git checkout -- <file>`: discard changes, 工作区变成暂存区内容
+- `git reset --hard`: 从HEAD到stagged, 再到工作区, 相当于discard all changes
 
 ```bash
 git checkout -- readme.md
-git diff
+git diff # empty result
 ```
