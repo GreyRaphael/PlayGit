@@ -85,8 +85,277 @@ method2: rebase
 
 **用户协作情形**:
 1. 两个用户修改不同repo中的不同文件
-2. 两个用户修改不同repo中的同一文件，不同区域
-3. 两个用户修改不同repo中的同一文件，同一区域
+1. 两个用户修改不同repo中的同一文件，不同区域
+1. 两个用户修改不同repo中的同一文件，同一区域
+1. 一个用户变更文件名，一个用户变更文件内容
+1. 两个用户都修改文件名
+
+**1. 两个用户修改不同repo中的不同文件**
+
+```bash
+# 1. github创建一个repo, 添加file1, file2; Settings添加Collaborator
+# 2. owner和collaborator都clone到本地
+
+# 3. collaborator修改file2, not push
+git remote -v
+# origin  git@github.com:BetaGrey/test.git (fetch)
+# origin  git@github.com:BetaGrey/test.git (push)
+
+git branch -av
+# * master                ab25d36 Beta add 2 files
+#   remotes/origin/HEAD   -> origin/master
+#   remotes/origin/master ab25d36 Beta add 2 files
+
+# # modify file2
+vi file2
+git add *
+git commit -m"collaborator fix file2"
+```
+
+```bash
+# 4. owner修改file1, push
+vi file1
+git add *
+git commit -m"owner fix file1"
+git push
+```
+
+```bash
+# 5. collaborator push
+git push
+# To github.com:BetaGrey/test.git
+#  ! [rejected]        master -> master (non-fast-forward)
+# error: failed to push some refs to 'git@github.com:BetaGrey/test.git'
+# hint: Updates were rejected because the tip of your current branch is behind
+# hint: its remote counterpart. Integrate the remote changes (e.g.
+# hint: 'git pull ...') before pushing again.
+# hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+# 为了细节用fetch & merge, 一般都是用pull
+git fetch origin
+
+git branch -av
+# * master                537df80 [ahead 1, behind 1] collaborator fix file2
+#   remotes/origin/HEAD   -> origin/master
+#   remotes/origin/master a94c8bf owner fix file1
+
+git merge origin/master
+# Merge made by the 'recursive' strategy.
+#  file1 | 4 +++-
+#  1 file changed, 3 insertions(+), 1 deletion(-)
+
+git push origin
+```
+
+```bash
+# 6. owner pull
+git pull
+gitk --all
+```
+> ![](Res02/merge_diff_files.png)
+
+**2. 两个用户修改不同repo中的同一文件，不同区域**
+
+```bash
+# 1.owner在上面repo例子的基础上添加file3, 并push
+# 2. owner然后修改file3前半段
+vi file3
+git add *
+git commit -m "owner add front code"
+```
+
+```bash
+# 3. collaborator修改file3后半段，并push
+git pull
+vi file3
+git add *
+git commit -m "colloaborator add bottome code"
+git push
+```
+
+```bash
+# 4. owner push
+git push
+# To github.com:BetaGrey/test.git
+#  ! [rejected]        master -> master (fetch first)
+# error: failed to push some refs to 'git@github.com:BetaGrey/test.git'
+# hint: Updates were rejected because the remote contains work that you do
+# hint: not have locally. This is usually caused by another repository pushing
+# hint: to the same ref. You may want to first integrate the remote changes
+# hint: (e.g., 'git pull ...') before pushing again.
+# hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+# 简便方式
+git pull
+git push
+```
+
+```bash
+# 5. collaborator pull
+git pull
+gitk --all
+```
+> ![](Res02/merge_diff_location.png)
+
+**3. 两个用户修改不同repo中的同一文件，同一区域**
+
+```bash
+# 1. owner在上面repo例子的基础上添加file4, 并push
+# 2. owner修改某一位置
+vi file4
+git add *
+git commit -m "owner add code in file4"
+```
+
+```bash
+# 3. collaborator修改file4同一位置
+git pull
+vi file4
+git add *
+git commit -m "collaborator add code in file4"
+git push
+```
+
+```bash
+# 4. owner push
+git push
+# To github.com:BetaGrey/test.git
+#  ! [rejected]        master -> master (fetch first)
+# error: failed to push some refs to 'git@github.com:BetaGrey/test.git'
+# hint: Updates were rejected because the remote contains work that you do
+# hint: not have locally. This is usually caused by another repository pushing
+# hint: to the same ref. You may want to first integrate the remote changes
+# hint: (e.g., 'git pull ...') before pushing again.
+# hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+git pull # 这种conflict，需要人工协调然后手动解决(vscode自动跳到conflict位置)
+# From github.com:BetaGrey/test
+#    223858a..27c6e18  master     -> origin/master
+# Auto-merging file4
+# CONFLICT (content): Merge conflict in file4
+# Automatic merge failed; fix conflicts and then commit the result.
+
+# 文本解决conflict之后: 比如两个修改都保存
+git status
+# You have unmerged paths.
+#   (fix conflicts and run "git commit")
+#   (use "git merge --abort" to abort the merge)
+
+# Unmerged paths:
+#   (use "git add <file>..." to mark resolution)
+
+#         both modified:   file4
+
+# no changes added to commit (use "git add" and/or "git commit -a")
+
+# add to staged & commit
+git commit -am "resolved conflict by owner & collaborator"
+git push
+```
+
+```bash
+# 5. collaborator
+git pull
+gitk --all
+```
+> ![](Res02/merge_same_location.png)
+
+**4. 一个用户变更文件名，一个用户变更文件内容**
+
+```bash
+# 1. owner在上面repo例子的基础上添加file5, 并push
+# 2. owner rename file5 to file55
+git mv file5 file55
+git commit -m "owner rename file5"
+```
+
+```bash
+# 3. Collaborator修改file5文件内容
+git pull
+vi file5
+git add *
+git commit -m "collaborator add lines"
+git push
+```
+
+```bash
+# 4. owner push
+git push
+# To github.com:BetaGrey/test.git
+#  ! [rejected]        master -> master (fetch first)
+# error: failed to push some refs to 'git@github.com:BetaGrey/test.git'
+# hint: Updates were rejected because the remote contains work that you do
+# hint: not have locally. This is usually caused by another repository pushing
+# hint: to the same ref. You may want to first integrate the remote changes
+# hint: (e.g., 'git pull ...') before pushing again.
+# hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+git pull
+# From github.com:BetaGrey/test
+#    b8b35ad..7485381  master     -> origin/master
+# Merge made by the 'recursive' strategy.
+#  file55 | 7 ++++++-
+#  1 file changed, 6 insertions(+), 1 deletion(-)
+
+git push
+```
+
+```bash
+# 5.Collaborator pull
+git pull
+gitk --all
+```
+> ![](Res02/merge_rename.png)
+
+**5. 两个用户都修改文件名**
+
+```bash
+# 1. owner在上面repo例子的基础上添加file6, 并push
+# 2. owner rename file6 to file60
+git mv file6 file60
+git commit -m "owner rename file6"
+```
+
+```bash
+# 3. Collaborator rename file6 to file 69
+git pull
+git mv file6 file69
+git commit -m "collaborator rename file6"
+git push
+```
+
+```bash
+# 4. owner push
+git push
+# not fast-forwards
+
+git pull
+# From github.com:BetaGrey/test
+#    6a96ecb..050f59b  master     -> origin/master
+# CONFLICT (rename/rename): Rename "file6"->"file60" in branch "HEAD" rename "file6"->"file69" in "050f59b8cf5b72ddab5098f0db0c432f8453c517"
+# Automatic merge failed; fix conflicts and then commit the result.
+
+ls # file60, file69同时存在
+git status
+# Unmerged paths:
+#   (use "git add/rm <file>..." as appropriate to mark resolution)
+#         both deleted:    file6
+#         added by us:     file60
+#         added by them:   file69
+# no changes added to commit (use "git add" and/or "git commit -a")
+
+git rm file6 file60
+git add file69
+git git commit -am "resolve rename conflict to file69"
+git push
+```
+
+```bash
+# 5.Collaborator pull
+git pull
+gitk --all
+```
+> ![](Res02/merge_rename2.png)
 
 ## Github Organization
 
