@@ -619,3 +619,69 @@ git慎用的cmd:
 git reset --hard HEAD^
 git push orgin -f
 ```
+
+团队协同工作，公共分支严禁拉到本地，然后`rebase`
+> 集成分支不要rebase, 只在现有情况下增加commit来让历史演进
+
+example:错误示范
+
+```bash
+# 1.owner add file1, file2, push
+git add file1
+git commit -m"add file1"
+git add file2
+git commit -m"add file2"
+git push
+```
+
+```bash
+# 2. collaborator pull, new branch, rebase, push
+git pull
+git checkout -b newb
+git log --oneline
+# a2eb13c (HEAD -> newb, origin/master, origin/HEAD, master) add file2
+# 2dc9d6f add fiile1
+# 8079e9f Initial commit
+
+git rebase -i 8079e9f
+# in vi rename 
+# add file1[here]
+# add file2[here]
+
+git push
+git push --set-upstream origin newb
+gitk --all
+```
+> ![](Res02/collaborator.png)
+
+```bash
+# 3. owner
+git branch -av
+# * master                a2eb13c add file2
+#   remotes/origin/HEAD   -> origin/master
+#   remotes/origin/master a2eb13c add file2
+#   remotes/origin/newb   abb0ff2 add file2[here]
+
+git checkout -b newb
+# modify file1
+git add *
+git commit -m"fix file1"
+# modify file2
+git add *
+git commit -m"fix file2"
+gitk --all
+```
+> ![](Res02/owner.png)
+
+```bash
+# 4. owner无法成功push, 因为newb 与 remote/origin/newb在不同支上，不是父子关系，也就是non-fast-forwards
+git push # warning
+git push --set-upstream origin newb
+# To github.com:BetaGrey/zui.git
+#  ! [rejected]        newb -> newb (non-fast-forward)
+# error: failed to push some refs to 'git@github.com:BetaGrey/zui.git'
+# hint: Updates were rejected because the tip of your current branch is behind
+# hint: its remote counterpart. Integrate the remote changes (e.g.
+# hint: 'git pull ...') before pushing again.
+# hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
