@@ -2,6 +2,7 @@
 
 - [Github](#github)
   - [Introduction](#introduction)
+  - [Sync local repo with github repo](#sync-local-repo-with-github-repo)
   - [Github with Collaborator](#github-with-collaborator)
   - [Github Organization](#github-organization)
   - [Development Flow](#development-flow)
@@ -9,29 +10,42 @@
 ## Introduction
 
 [Github Features](https://github.com/features)
-> github的CI是3rd提供的  
+> github的CI是3rd [Market](https://github.com/marketplace)提供的  
 > gitlab本身具有CI
 
 Github Search Repos Trick:
 - [Advanced Search](https://github.com/search/advanced?) Repos: `created:<2019-01-01`
-- search readme: `ipv6 hosts google in:readme filename:hosts`
-- search readme: `ipv6 hosts in:readme stars:>1000`
+- search readme: `ipv6 hosts google in:readme filename:hosts stars:>1000`
 - search blog: `github blog in:readme stars:>2000`
+  > [Github Blog Template jekyll](https://github.com/barryclark/jekyll-now)
 
-**Github blog**
+## Sync local repo with github repo
 
-Github Advanced Search: `github blog in:readme`
-> [jekyll](https://github.com/barryclark/jekyll-now)
+目的: 将本地非空的repo与远程非空repo同步
+1. 本地id_rsa.pub与Github Settings中ssh-key相同，本地repo与远程repo作者相同(email相同)
+2. 本地id_rsa.pub与Github Settings中ssh-key相同，本地repo与远程repo作者不同(通过`git config --local user.email`实现)
+3. 本地id_rsa.pub与Github Settings中ssh-key不同，本地repo与远程repo作者不同，远程repo中的Settings/Collaborators中要添加本地id_rsa.pub对应的github账户
 
-example: sync with github
+easy merge by `pull`:
+
+```bash
+git remote add github git@github.com:GreyRaphael/test.git
+# pull: fetch & merge
+git pull github master --allow-unrelated-histories
+# see structure
+gitk --all
+# push other branches to remote
+git push github --all
+gitk --all
+````
+
+Details merge by `fetch` and `merge`
 
 ```bash
 git remote add github git@github.com:GreyRaphael/test.git
 git remote -v
 # github  git@github.com:GreyRaphael/test.git (fetch)
 # github  git@github.com:GreyRaphael/test.git (push)
-# zhineng file://C:\Users\Administrator\Downloads\zhineng.git (fetch)
-# zhineng file://C:\Users\Administrator\Downloads\zhineng.git (push)
 
 # push all branches to remote
 git push github --all
@@ -56,7 +70,6 @@ non fast-forward: master与remote/github/master没有共同的祖先; 所以non 
 method1: merge
 
 ```bash
-# method1: merge
 git checkout master
 git merge github/master # 因为master没有父子关系，会报错
 # fatal: refusing to merge unrelated histories
@@ -70,10 +83,10 @@ method2: rebase
 
 ## Github with Collaborator
 
-Method1: repo/Settings/Collaborators(recommended)
-> all collaborators should have Github account
-
-Method2: 
+**用户协作情形**:
+1. 两个用户修改不同repo中的不同文件
+2. 两个用户修改不同repo中的同一文件，不同区域
+3. 两个用户修改不同repo中的同一文件，同一区域
 
 ## Github Organization
 
