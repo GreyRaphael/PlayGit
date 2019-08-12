@@ -6,6 +6,7 @@
   - [Github with Collaborator](#github-with-collaborator)
   - [Github Organization](#github-organization)
   - [Development Flow](#development-flow)
+  - [Github Code Review](#github-code-review)
 
 ## Introduction
 
@@ -390,3 +391,7 @@ Release branches with GitLab flow
 > <img src="Res02/gitlab_flow_release.png" height=400>
 
 简单的一般采用Github多个特性分支开发的方式
+
+## Github Code Review
+
+Repo/Settings/Branches/Branch protection rules/Add rule/
