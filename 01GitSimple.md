@@ -2,17 +2,15 @@
 
 - [Git Simple Operation](#git-simple-operation)
   - [Introduction](#introduction)
-  - [Git flow](#git-flow)
+  - [Git procedure](#git-procedure)
   - [Log](#log)
   - [.git directory](#git-directory)
-  - [detached HEAD(分离头指针)](#detached-head%e5%88%86%e7%a6%bb%e5%a4%b4%e6%8c%87%e9%92%88)
+  - [detached HEAD](#detached-head)
   - [meld commits](#meld-commits)
   - [diff](#diff)
   - [reset, checkout](#reset-checkout)
   - [Stash](#stash)
   - [Git Backup](#git-backup)
-  - [Github](#github)
-  - [Github with Collaborator](#github-with-collaborator)
 
 ## Introduction
 
@@ -68,7 +66,7 @@ cd project_name
 git init
 ```
 
-## Git flow
+## Git procedure
 
 ![](Res01/git_state.png)
 
@@ -280,9 +278,9 @@ git cat-file -p 979c0bed4d7fd86f7d03b8c1b70be8148f32723f
 # 100644 blob 968200480e69a05b4d85b9e7143d864bc9c7435b    file3.txt
 ```
 
-## detached HEAD(分离头指针)
+## detached HEAD
 
-detached HEAD: 本质是没有在branch上面工作，但可以add, commit，但如果再切换到branch，之前的工作就消失了；所以detached HEAD应用到
+detached HEAD(分离头指针): 本质是没有在branch上面工作，但可以add, commit，但如果再切换到branch，之前的工作就消失了；所以detached HEAD应用到
 - detached HEAD需要和某个branch挂钩，进而保存工作
 - detached HEAD用来做实验，做完了扔掉
 
@@ -605,106 +603,3 @@ git branch -av
 # 6. remove remote
 git remote remove zhineng
 ```
-
-## Github
-
-[Github Features](https://github.com/features)
-> github的CI是3rd提供的  
-> gitlab本身具有CI
-
-Github Trick:
-- [Advanced Search](https://github.com/search/advanced?) Repos: created:<2019-01-01
-- search readme: `ipv6 hosts google in:readme filename:hosts`
-- search readme: `ipv6 hosts in:readme stars:>1000`
-- search blog: `github blog in:readme stars:>2000`
-
-**Github blog**
-
-Github Advanced Search: `github blog in:readme`
-> [jekyll](https://github.com/barryclark/jekyll-now)
-
-example: sync with github
-
-```bash
-git remote add github git@github.com:GreyRaphael/test.git
-git remote -v
-# github  git@github.com:GreyRaphael/test.git (fetch)
-# github  git@github.com:GreyRaphael/test.git (push)
-# zhineng file://C:\Users\Administrator\Downloads\zhineng.git (fetch)
-# zhineng file://C:\Users\Administrator\Downloads\zhineng.git (push)
-
-# push all branches to remote
-git push github --all
-# To github.com:GreyRaphael/test.git
-#  * [new branch]      gewei -> gewei
-#  * [new branch]      temp -> temp
-#  ! [rejected]        master -> master (fetch first)
-# error: failed to push some refs to 'git@github.com:GreyRaphael/test.git'
-
-# pull: 先fetch再merge; 保险起见fetch
-git fetch github master
-# From github.com:GreyRaphael/test
-#  * branch            master     -> FETCH_HEAD
-#  * [new branch]      master     -> github/master
-
-# fetch会将remote的tree拿下来，但trees并没有连接
-gitk --all
-```
-
-non fast-forward: master与remote/github/master没有共同的祖先; 所以non fast-forward再push回报错;
-
-method1: merge
-
-```bash
-# method1: merge
-git checkout master
-git merge github/master # 因为master没有父子关系，会报错
-# fatal: refusing to merge unrelated histories
-git merge --allow-unrelated-histories github/master # ok
-gitk --all # merge之后的HEAD有两个Parent节点
-git push github master
-```
-
-method2: rebase
-> 以remote/github/master作为基础，`rebase -i`, 然后pick, squish, squish来形成一个新的tree, 代价就是更改了以前commits的hash值
-
-## Github with Collaborator
-
-Method1: repo/Settings/Collaborators(recommended)
-> all collaborators should have Github account
-
-Method2: 
-
-**Github Organization**
-
-Organization包含repos, Organization中有People(Github user), 权限控制采用Team
-> 对比Gitlab, People中的所有人都可以看到其他人的权限，方便申请
-
-[ExampleOrganization](https://github.com/pku-ion-beam)
-
-**Development Flow**
-
-Trunk Based Development
-> Java开发挺适用的  
-> ![](Res01/trunk.png)
-
-Git Flow
-> 适用于：不具备主干开发能力。有预定的发布周期。需要执行严格的发布流程。研发周期长。  
-> ![](Res01/gitflow.png)
-
-Github Flow
-> ![](Res01/github_flow.png)
-
-Production branch with GitLab flow
-> 适用于：不具备主干开发能力。无法控制准确的发布时间，但又要求不停的集成。  
-> ![](Res01/gitlab_flow_production.png)
-
-Environment branches with GitLab flow
-> 适用于：不具备主干开发能力。需要逐个通过各个测试环境的验证才能发布  
-> ![](Res01/gitlab_flow_env.png)
-
-Release branches with GitLab flow
-> 适用于：不具备主干开发能力。需要对外发布和维护不同版本(比如不同驱动的不同版本都可以用，那么就要维护多个版本)。  
-> ![](Res01/gitlab_flow_release.png)
-
-简单的一般采用Github多个特性分支开发的方式
