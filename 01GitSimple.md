@@ -11,6 +11,7 @@
   - [reset, checkout](#reset-checkout)
   - [Stash](#stash)
   - [Git Backup](#git-backup)
+  - [Git Attention](#git-attention)
 
 ## Introduction
 
@@ -602,4 +603,19 @@ git branch -av
 
 # 6. remove remote
 git remote remove zhineng
+```
+
+## Git Attention
+
+git慎用的cmd:
+- reset
+- checkout
+
+团队相关的git命令如下是强制禁止的(一般github, gitlab提供了相关的机制来禁止，它们一般会报错):
+- `git push -f`
+
+```bash
+# 回到上次commit, 这次的commit彻底删除
+git reset --hard HEAD^
+git push orgin -f
 ```
