@@ -13,8 +13,6 @@
   - [Git Backup](#git-backup)
   - [Github](#github)
   - [Github with Collaborator](#github-with-collaborator)
-  - [Github blog](#github-blog)
-  - [Github Organization](#github-organization)
 
 ## Introduction
 
@@ -620,6 +618,11 @@ Github Trick:
 - search readme: `ipv6 hosts in:readme stars:>1000`
 - search blog: `github blog in:readme stars:>2000`
 
+**Github blog**
+
+Github Advanced Search: `github blog in:readme`
+> [jekyll](https://github.com/barryclark/jekyll-now)
+
 example: sync with github
 
 ```bash
@@ -672,14 +675,36 @@ Method1: repo/Settings/Collaborators(recommended)
 
 Method2: 
 
-## Github blog
-
-Github Advanced Search: `github blog in:readme`
-> [jekyll](https://github.com/barryclark/jekyll-now)
-
-## Github Organization
+**Github Organization**
 
 Organization包含repos, Organization中有People(Github user), 权限控制采用Team
 > 对比Gitlab, People中的所有人都可以看到其他人的权限，方便申请
 
 [ExampleOrganization](https://github.com/pku-ion-beam)
+
+**Development Flow**
+
+Trunk Based Development
+> Java开发挺适用的  
+> ![](Res01/trunk.png)
+
+Git Flow
+> 适用于：不具备主干开发能力。有预定的发布周期。需要执行严格的发布流程。研发周期长。  
+> ![](Res01/gitflow.png)
+
+Github Flow
+> ![](Res01/github_flow.png)
+
+Production branch with GitLab flow
+> 适用于：不具备主干开发能力。无法控制准确的发布时间，但又要求不停的集成。  
+> ![](Res01/gitlab_flow_production.png)
+
+Environment branches with GitLab flow
+> 适用于：不具备主干开发能力。需要逐个通过各个测试环境的验证才能发布  
+> ![](Res01/gitlab_flow_env.png)
+
+Release branches with GitLab flow
+> 适用于：不具备主干开发能力。需要对外发布和维护不同版本(比如不同驱动的不同版本都可以用，那么就要维护多个版本)。  
+> ![](Res01/gitlab_flow_release.png)
+
+简单的一般采用Github多个特性分支开发的方式
