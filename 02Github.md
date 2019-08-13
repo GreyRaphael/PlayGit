@@ -6,6 +6,7 @@
   - [Github with Collaborator](#github-with-collaborator)
   - [Github Organization](#github-organization)
   - [Development Flow](#development-flow)
+  - [Github pull Request](#github-pull-request)
   - [Github Code Review](#github-code-review)
 
 ## Introduction
@@ -391,6 +392,33 @@ Release branches with GitLab flow
 > <img src="Res02/gitlab_flow_release.png" height=400>
 
 简单的一般采用Github多个特性分支开发的方式
+
+## Github pull Request
+
+本质: 通过pull requests将一个分支合并到另一个分支
+> <img src="Res02/github_flow.png" height=200>
+
+Github有三种合并分支的方式，通过Repo/Settings/Options/Merge Button来配置，默认三种都支持
+
+Pull-Requests流程: Repo/Pull requests/New pull request/Choose Branch/Create pull request/，然后选择三种方式其一:
+> ![](Res02/github_merge_methods.png)
+
+Example: 演示三种merge方式
+> ![](Res02/merge_example.png)
+
+通过`git push origin master -f`返回未merge的状态，因为本地的master为未合并状态
+
+**Create a merge commit**
+> 新节点commit有两个parent  
+> ![](Res02/merge_method1.png)
+
+**Squash and merge**
+> beijing分支的commits合并成一个，并rebase到master分支上  
+> ![](Res02/merge_method2.png)
+
+**Rebase and merge**
+> beijing分支的commits挨个rebase到master分支上  
+> ![](Res02/merge_method3.png)
 
 ## Github Code Review
 
