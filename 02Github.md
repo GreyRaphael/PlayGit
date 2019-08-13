@@ -7,6 +7,7 @@
   - [Github Organization](#github-organization)
   - [Development Flow](#development-flow)
   - [Github pull Request](#github-pull-request)
+  - [Github issus & project](#github-issus--project)
   - [Github Code Review](#github-code-review)
 
 ## Introduction
@@ -419,6 +420,12 @@ Example: 演示三种merge方式
 **Rebase and merge**
 > beijing分支的commits挨个rebase到master分支上  
 > ![](Res02/merge_method3.png)
+
+## Github issus & project
+
+issue(Repo/issues): bug, in process....
+
+project(Repo/Projects): todo board
 
 ## Github Code Review
 
