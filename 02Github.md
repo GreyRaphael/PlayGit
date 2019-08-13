@@ -421,6 +421,96 @@ Example: 演示三种merge方式
 > beijing分支的commits挨个rebase到master分支上  
 > ![](Res02/merge_method3.png)
 
+Example: 团队协作演示三种merge方式(先merge beijing,再merge hk)
+> ![](Res02/team_merge_example.png)
+
+- 通过`git push origin c5d6a66f:master -f`返回master未merge的状态;
+- 通过`git push origin dbbf6d9d:hk -f`返回hk未merge的状态
+
+**两次merge都使用Create a merge commit**
+
+一个账户pull request先merge beijng得到
+> ![](Res02/team_merge_method1a.png)
+
+另一个账户merge hk，因为两个用户同时修改同一文件同一位置发生冲突；在github中可以Resolve conflicts得到
+> ![](Res02/team_merge_method1b.png)
+
+然后再Merge request得到
+> ![](Res02/team_merge_method1c.png)
+
+**两次merge都使用Squash and merge**
+
+一个账户pull request先merge beijng得到
+> ![](Res02/team_merge_method2a.png)
+
+另一个账户merge hk，因为两个用户同时修改同一文件同一位置发生冲突；在github中可以Resolve conflicts得到
+> ![](Res02/team_merge_method2b.png)
+
+然后再Merge request得到
+> ![](Res02/team_merge_method2c.png)
+
+**两次merge都使用Rebase and merge**
+
+一个账户pull request先merge beijng得到
+> ![](Res02/team_merge_method3a.png)
+
+另一个账户merge hk，因为两个用户同时修改同一文件同一位置发生冲突；在github中可以Resolve conflicts得到
+> ![](Res02/team_merge_method3b.png)
+
+然后再Merge request得到报错
+> `This branch cannot be rebased due to conflicts`
+
+那么只能手动操作
+```bash
+# 先退回beijing merged
+git push origin dbbf6d9d:hk -f
+
+# hk以8cc8dd30:master做rebase
+git fetch origin
+git checkout hk
+git branch -av
+#   beijing                7321d78 add text to file1
+# * hk                     dbbf6d9 hk fix file1
+#   master                 c5d6a66 [behind 2] master add lines
+#   remotes/origin/HEAD    -> origin/master
+#   remotes/origin/beijing 7321d78 add text to file1
+#   remotes/origin/hk      dbbf6d9 hk fix file1
+#   remotes/origin/master  8cc8dd3 add text to file1
+git rebase origin/master
+# vscode解决冲突,保存
+git add *
+git rebase --continue
+# vscode解决冲突,保存
+git add *
+git rebase --continue
+# 两个conflicts, 所以需要continue两次
+git status # working tree clean
+
+git push origin hk # error
+git push origin hk -f
+```
+
+然后Github网页之前报错的信息`This branch cannot be rebased due to conflicts`消失，可以Rebase and Merge得到
+> ![](Res02/team_merge_method3c.png)
+
+Example: 新建多余的branch，方便跳回，重做`Rebase & Merge`例子
+> 多余的branch为`h`, `b`
+> ![](Res03/1.png)
+> ![](Res03/2.png)
+> ![](Res03/3.png)
+> ![](Res03/4.png)
+> ![](Res03/5.png)
+> ![](Res03/6.png)
+
+```bash
+# hk跳回h分支
+git reset --hard origin/h
+
+# master跳回beijing merged的位置
+git checkout master
+git reset --hard a97208c2
+```
+
 ## Github issus & project
 
 issue(Repo/issues): bug, in process....
