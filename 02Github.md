@@ -9,6 +9,7 @@
   - [Github pull Request](#github-pull-request)
   - [Github issus & project](#github-issus--project)
   - [Github Code Review](#github-code-review)
+  - [Github Wiki](#github-wiki)
 
 ## Introduction
 
@@ -522,3 +523,22 @@ project(Repo/Projects): todo board
 Repo/Settings/Branches/Branch protection rules/Add rule/, 设置pull request到master需要Review申请;
 
 其他用户pull request的时候就需要选择Reviewer来检查代码，其他用户决定是否通过。
+
+## Github Wiki
+
+```bash
+git clone https://github.com/moby/moby.wiki.git
+cd moby.wiki
+
+git remote add second https://github.com/BetaGrey/test.wiki.git
+git remote -v
+# origin  https://github.com/moby/moby.wiki.git (fetch)
+# origin  https://github.com/moby/moby.wiki.git (push)
+# second  https://github.com/BetaGrey/test.wiki.git (fetch)
+# second  https://github.com/BetaGrey/test.wiki.git (push)
+
+git branch -av
+git fetch second
+git push second master # error
+git push second master -f
+```
