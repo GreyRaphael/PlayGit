@@ -429,4 +429,6 @@ project(Repo/Projects): todo board
 
 ## Github Code Review
 
-Repo/Settings/Branches/Branch protection rules/Add rule/
+Repo/Settings/Branches/Branch protection rules/Add rule/, 设置pull request到master需要Review申请;
+
+其他用户pull request的时候就需要选择Reviewer来检查代码，其他用户决定是否通过。
