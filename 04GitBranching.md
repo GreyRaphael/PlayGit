@@ -115,3 +115,91 @@ git rebase C2  three
 ```
 
 ## Section2-git remote
+
+```bash
+# 1.1 clone intro
+git clone
+
+# 1.2 origin/master checkout
+git commit
+git checkout o/master
+git commit
+
+# 1.3 git fetch
+git fetch
+
+# 1.4 git pull details
+git fetch
+git merge o/master
+# above 2 commands are equal to `git pull`
+
+# 1.5 Fake Teamwork
+git clone
+git fakeTeamwork 2
+git commit
+git pull
+
+# 1.6 git push
+git clone
+git commit
+git commit
+git push
+
+# 1.7 Diverged History
+git clone
+git fakeTeamwork
+git commit
+git pull --rebase
+git push
+
+# 2.1 pull --rebase
+git rebase -i master side1
+git rebase side1 side2
+git rebase side2 side3
+git rebase side3 master
+git pull --rebase
+git push
+
+# or
+git fetch
+git rebase o/master side1
+git rebase side1 side2
+git rebase side2 side3
+git rebase side3 master
+git push
+
+# 2.2 pull by merge
+git rebase side1 master
+git pull
+git merge side2
+git merge side3
+git push
+
+# 2.3 tracking remote
+git checkout -b side o/master # git branch -u o/master side
+git commit
+git pull --rebase
+git push
+
+# 2.4 remote push
+git push origin master
+git push origin foo
+
+# 2.5 push args
+git push origin foo:master
+git push origin master^:foo
+
+# 2.6 fetch args, <source>:<destination>
+git fetch origin foo:master
+git fetch origin master^:foo
+git checkout foo
+git merge master
+
+# 2.7 delete remote
+git push origin :foo
+git pull origin :bar
+
+# 2.8 pull args
+git pull origin bar:foo
+git pull origin master:side
+````
